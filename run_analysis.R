@@ -28,7 +28,7 @@ features <- read.table("C:\\Users\\LGordonRogers\\OneDrive - Union of Concerned 
 
 ##Read in activity levels
 activity_levels <- read.table("C:\\Users\\LGordonRogers\\OneDrive - Union of Concerned Scientists\\ProgrammingAssignment2\\UCI HAR Dataset\\activity_labels.txt")
-colnames(activity_levels) <- c("ID", "type") 
+colnames(activity_levels) <- c("activityID", "activitytype") 
 
 ##Setting variable names
 colnames(x_train) <- features[, 2]
@@ -46,14 +46,25 @@ alldata <- rbind(test, train)
 
   
 ##Extract only the measurements on the mean and standard deviation for each measurement
+meanstd <- grepl("activityID|subjectID|mean\\(\\)|std\\(\\)", colnames(alldata)) 
+meanstddata <- alldata[,meanstd] 
 
 
+##Use descriptive activity names to name the activities in the dataset
+actnames <- merge(meanstddata, activity_levels, by="activityID", all.x=TRUE) 
 
 
+##Label with descriptive variable names
+colnames(actnames) <- gsub("^t", "time", colnames(actnames)) 
+colnames(actnames) <- gsub("^f", "frequency", colnames(actnames)) 
+colnames(actnames) <- gsub("Acc", "Accelermeter", colnames(actnames)) 
+colnames(actnames) <- gsub("Gyro", "Gyroscope", colnames(actnames))
+colnames(actnames) <- gsub("Mag", "Magnitude", colnames(actnames)) 
+colnames(actnames) <- gsub("BodyBody", "Body", colnames(actnames)) 
 
-##Use descriptive activity names to name the activites in the dataset
-
-##Label the datasets with descriptive variable names
 
 ##Create a second, independent tidy data set with the average of each variable for each activity and subject
+tidy <- actnames %>%
+  group_by(subjectID, activityID, activitytype) %>%
+  summarize_all(mean) 
 
