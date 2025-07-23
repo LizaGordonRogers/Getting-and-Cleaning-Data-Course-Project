@@ -1,0 +1,11 @@
+Variables in dataset 
+  x_train, y_train, x_test, y_test, subject_train, and subject_test contain data from the downloaded files.
+  x_data, y_data, and subject_data merge the above datasets for further analysis.
+  features contains the correct names for the x_data dataset, applied to the column names for detailed reference.
+
+run_analysis.R script runs the following analysis: 
+Merges the training and the test sets to create one data set.
+Extracts only the measurements on the mean and standard deviation for each measurement. 
+Uses descriptive activity names to name the activities in the data set
+Appropriately labels the data set with descriptive variable names. 
+From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject
